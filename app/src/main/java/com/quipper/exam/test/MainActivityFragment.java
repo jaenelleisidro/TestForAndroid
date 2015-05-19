@@ -47,8 +47,7 @@ public class MainActivityFragment extends Fragment {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
-                Date dateToShow = new Date(new Date().getTime() - 30 * 60 * 1000);
+                Date dateToShow = new Date(System.currentTimeMillis() - 30 * 60 * 1000);
                 imageUrl = String.format("http://www.jma.go.jp/jp/gms/imgs/5/infrared/1/%s00-00.png",
                         IMAGE_TIME_FORMAT.format(dateToShow));
                 loadImage(imageUrl);
