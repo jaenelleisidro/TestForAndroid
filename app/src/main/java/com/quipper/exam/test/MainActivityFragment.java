@@ -1,5 +1,6 @@
 package com.quipper.exam.test;
 
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         earthImage.setVisibility(View.GONE);
         dateText = (TextView) view.findViewById(R.id.date_text);
         dateText.setVisibility(View.GONE);
-        
+
         mSlider=(SliderLayout)view.findViewById(R.id.slider);
         loadSlider();
         loadButton.setOnClickListener(this);
@@ -160,4 +161,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mSlider.setDuration(2000);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mSlider.refreshDrawableState();
+
+    }
 }
