@@ -1,8 +1,5 @@
 package com.quipper.exam.test;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,11 +18,9 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import com.daimajia.slider.library.SliderLayout;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,13 +39,17 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         IMAGE_TIME_FORMAT.setTimeZone(jst);
     }
     String imageUrl;
+    String imageDate;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         loadButton = (Button) view.findViewById(R.id.load_button);
         earthImage = (ImageView) view.findViewById(R.id.earth_image);
+        earthImage.setVisibility(View.GONE);
         dateText = (TextView) view.findViewById(R.id.date_text);
+        dateText.setVisibility(View.GONE);
+        
         mSlider=(SliderLayout)view.findViewById(R.id.slider);
         loadSlider();
         loadButton.setOnClickListener(this);
@@ -62,18 +61,31 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         Date dateToShow = generateDateForMinutesAgo(CONSTANT_MINUTESDELAYOFMAPAPI);
         imageUrl = generateMapImageUrlFromDate(dateToShow);
-        loadImage(imageUrl);
-        dateText.setText(LABEL_FORMAT.format(dateToShow));
+        imageDate=LABEL_FORMAT.format(dateToShow);
+        loadMap(imageUrl, imageDate);
     }
     /**
-     * This will load the image from url, if it's already downloaded before, it will use the cache.
-     * @param imageUrl
+     * This will load the map image from url, if it's already downloaded before, it will use the cache.
+     * @param imageUrl url of the map image
+     * @param imageDate  date of the map image
      */
-    private void loadImage(String imageUrl){
+    private void loadMap(String imageUrl,String imageDate){
         Picasso.with(getActivity())
                 .load(imageUrl)
                 .into(earthImage);
+        dateText.setText(imageDate);
+        earthImage.setVisibility(View.VISIBLE);
+        dateText.setVisibility(View.VISIBLE);
+        earthImage.setOnClickListener(closeEarthClickListener);
     }
+
+    View.OnClickListener closeEarthClickListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            earthImage.setVisibility(View.GONE);
+            dateText.setVisibility(View.GONE);
+        }
+    };
 
 
 
@@ -81,10 +93,12 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null){
-            if(savedInstanceState.containsKey("imageUrl")){
+            if(savedInstanceState.containsKey("imageUrl") && savedInstanceState.containsKey("imageDate")){
                 imageUrl=savedInstanceState.getString("imageUrl");
-                loadImage(imageUrl);
+                imageDate=savedInstanceState.getString("imageDate");
+                loadMap(imageUrl,imageDate);
             }
+
         }
     }
 
@@ -97,6 +111,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("imageUrl",imageUrl);
+        outState.putString("imageDate",imageDate);
     }
 
     private Date generateDateForMinutesAgo(int minutes){
