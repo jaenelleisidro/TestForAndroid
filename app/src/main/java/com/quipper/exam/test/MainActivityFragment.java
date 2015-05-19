@@ -160,11 +160,4 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mSlider.setCustomAnimation(new DescriptionAnimation());
         mSlider.setDuration(2000);
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mSlider.refreshDrawableState();
-
-    }
 }
