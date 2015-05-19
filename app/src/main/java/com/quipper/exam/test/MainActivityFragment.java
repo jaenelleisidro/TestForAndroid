@@ -33,6 +33,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private TextView dateText;
     private SliderLayout mSlider;
     private static final int CONSTANT_MINUTESDELAYOFMAPAPI=30;
+    private static final String CONSTANT_MAPAPIWEBSITE="http://www.jma.go.jp/jp/gms/imgs/5/infrared/1/%s00-00.png";
+    public static final String BUNDLEKEY_IMAGEURL="imageUrl";
+    public static final String BUNDLEKEY_IMAGEDATE="imageDate";
+
     private static final SimpleDateFormat IMAGE_TIME_FORMAT = new SimpleDateFormat("yyyyMMddHH", Locale.US);
     private static final SimpleDateFormat LABEL_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:00", Locale.US);
     static {
@@ -94,9 +98,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null){
-            if(savedInstanceState.containsKey("imageUrl") && savedInstanceState.containsKey("imageDate")){
-                imageUrl=savedInstanceState.getString("imageUrl");
-                imageDate=savedInstanceState.getString("imageDate");
+            if(savedInstanceState.containsKey(BUNDLEKEY_IMAGEURL) && savedInstanceState.containsKey(BUNDLEKEY_IMAGEDATE)){
+                imageUrl=savedInstanceState.getString(BUNDLEKEY_IMAGEURL);
+                imageDate=savedInstanceState.getString(BUNDLEKEY_IMAGEDATE);
                 loadMap(imageUrl,imageDate);
             }
 
@@ -108,11 +112,17 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
      * since picasso has default caching we dont need to worry about downloading the image again, we just need the url and it will fetch the cache for us.
      * @param outState
      */
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("imageUrl",imageUrl);
-        outState.putString("imageDate",imageDate);
+        if(imageUrl!=null) {
+            outState.putString(BUNDLEKEY_IMAGEURL, imageUrl);
+        }
+        if(imageDate!=null) {
+            outState.putString(BUNDLEKEY_IMAGEDATE,imageDate);
+        }
+
     }
 
     private Date generateDateForMinutesAgo(int minutes){
@@ -121,7 +131,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     private String generateMapImageUrlFromDate(Date date){
-        String imageUrl = String.format("http://www.jma.go.jp/jp/gms/imgs/5/infrared/1/%s00-00.png",IMAGE_TIME_FORMAT.format(date));
+        String imageUrl = String.format(CONSTANT_MAPAPIWEBSITE,IMAGE_TIME_FORMAT.format(date));
         return imageUrl;
     }
     private void loadSlider(){
@@ -159,5 +169,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mSlider.setCustomAnimation(new DescriptionAnimation());
         mSlider.setDuration(2000);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }
