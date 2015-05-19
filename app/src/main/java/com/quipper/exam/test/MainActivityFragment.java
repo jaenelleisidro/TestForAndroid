@@ -2,6 +2,7 @@ package com.quipper.exam.test;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class MainActivityFragment extends Fragment {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //
                 Date dateToShow = new Date(new Date().getTime() - 30 * 60 * 1000);
                 imageUrl = String.format("http://www.jma.go.jp/jp/gms/imgs/5/infrared/1/%s00-00.png",
                         IMAGE_TIME_FORMAT.format(dateToShow));
@@ -57,6 +59,10 @@ public class MainActivityFragment extends Fragment {
         return view;
     }
 
+    /**
+     * This will load the image from url, if it's already downloaded before, it will use the cache.
+     * @param imageUrl
+     */
     private void loadImage(String imageUrl){
         Picasso.with(getActivity())
                 .load(imageUrl)
@@ -74,6 +80,11 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
+    /**
+     * This will save the url where we need to download the image when orientation changes
+     * since picasso has default caching we dont need to worry about downloading the image again, we just need the url and it will fetch the cache for us.
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
