@@ -1,6 +1,5 @@
 package com.quipper.exam.test;
 
-import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,19 +31,26 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private ImageView earthImage;
     private TextView dateText;
     private SliderLayout mSlider;
+    private static final int CONSTANT_ONESECONDINMILLISECONDS=1000;
+    private static final int CONSTANT_ONEMINUTEINMILLISECONDS=CONSTANT_ONESECONDINMILLISECONDS*60;
+
     private static final int CONSTANT_MINUTESDELAYOFMAPAPI=30;
-    private static final String CONSTANT_MAPAPIWEBSITE="http://www.jma.go.jp/jp/gms/imgs/5/infrared/1/%s00-00.png";
+    private static final int SLIDERMAP_NUMBEROFMAPS=5;
+    private static final int SLIDERMAP_MINUTESINTERVAL=60;
+
+    private static final String CONSTANT_MAPAPIWEBSITE ="http://www.jma.go.jp";
+    private static final String CONSTANT_MAPAPIIMAGE =CONSTANT_MAPAPIWEBSITE+"/jp/gms/imgs/5/infrared/1/%s00-00.png";
     public static final String BUNDLEKEY_IMAGEURL="imageUrl";
     public static final String BUNDLEKEY_IMAGEDATE="imageDate";
 
     private static final SimpleDateFormat IMAGE_TIME_FORMAT = new SimpleDateFormat("yyyyMMddHH", Locale.US);
     private static final SimpleDateFormat LABEL_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:00", Locale.US);
+    String imageUrl;
+    String imageDate;
     static {
         TimeZone jst = TimeZone.getTimeZone("GMT+09:00");
         IMAGE_TIME_FORMAT.setTimeZone(jst);
     }
-    String imageUrl;
-    String imageDate;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,30 +75,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         imageDate=LABEL_FORMAT.format(dateToShow);
         loadMap(imageUrl, imageDate);
     }
-    /**
-     * This will load the map image from url, if it's already downloaded before, it will use the cache.
-     * @param imageUrl url of the map image
-     * @param imageDate  date of the map image
-     */
-    private void loadMap(String imageUrl,String imageDate){
-        Picasso.with(getActivity())
-                .load(imageUrl)
-                .into(earthImage);
-        dateText.setText(imageDate);
-        earthImage.setVisibility(View.VISIBLE);
-        dateText.setVisibility(View.VISIBLE);
-        earthImage.setOnClickListener(closeEarthClickListener);
-    }
-
-    View.OnClickListener closeEarthClickListener=new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            earthImage.setVisibility(View.GONE);
-            dateText.setVisibility(View.GONE);
-        }
-    };
-
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -125,17 +107,31 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     }
 
+    /**
+     * Generate a date object from current time minus minutes ago
+     * @param minutes
+     * @return
+     */
     private Date generateDateForMinutesAgo(int minutes){
-        Date dateToShow = new Date(System.currentTimeMillis() - minutes * 60 * 1000);
+        Date dateToShow = new Date(System.currentTimeMillis() - minutes * CONSTANT_ONEMINUTEINMILLISECONDS);
         return dateToShow;
     }
 
+    /**
+     * generate a valid map image url based on api
+     * @param date the date of the map image
+     * @return
+     */
     private String generateMapImageUrlFromDate(Date date){
-        String imageUrl = String.format(CONSTANT_MAPAPIWEBSITE,IMAGE_TIME_FORMAT.format(date));
+        String imageUrl = String.format(CONSTANT_MAPAPIIMAGE,IMAGE_TIME_FORMAT.format(date));
         return imageUrl;
     }
+
+    /**
+     * starts the backgroud map that animates
+     */
     private void loadSlider(){
-        loadSlider(5,60);
+        loadSlider(SLIDERMAP_NUMBEROFMAPS,SLIDERMAP_MINUTESINTERVAL);
     }
 
     private void loadSlider(int numberOfmaps,int minutesInterval){
@@ -148,19 +144,19 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
 
+    /**
+     * This will load the slider layout with images supplied by the url arguement
+     * @param urls links of images
+     */
     private void loadSlider(List<String> urls){
-
         for(String url : urls){
             DefaultSliderView defaultSliderView=new DefaultSliderView(getActivity());
             defaultSliderView.image(url);
-            // initialize a SliderLayout
-
             defaultSliderView
 //                    .description(name)
                     .image(url)
                     .setScaleType(BaseSliderView.ScaleType.Fit);
 //                    .setOnSliderClickListener(this);
-            //add your extra information
             defaultSliderView.getBundle()
                     .putString("url",url);
             mSlider.addSlider(defaultSliderView);
@@ -171,8 +167,31 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mSlider.setDuration(2000);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+
+    /**
+     * This will load the map image from url, if it's already downloaded before, it will use the cache.
+     * @param imageUrl url of the map image
+     * @param imageDate  date of the map image
+     */
+    private void loadMap(String imageUrl,String imageDate){
+        Picasso.with(getActivity())
+                .load(imageUrl)
+                .into(earthImage);
+        dateText.setText(imageDate);
+        earthImage.setVisibility(View.VISIBLE);
+        dateText.setVisibility(View.VISIBLE);
+        earthImage.setOnClickListener(closeEarthClickListener);
     }
+
+    //a listener to close loaded map
+    View.OnClickListener closeEarthClickListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            earthImage.setVisibility(View.GONE);
+            dateText.setVisibility(View.GONE);
+            imageUrl=null;
+            imageDate=null;
+        }
+    };
+
 }
