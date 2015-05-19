@@ -227,6 +227,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     View.OnClickListener closeEarthClickListener=new View.OnClickListener(){
         @Override
         public void onClick(View v) {
+            //delete the following variable to avoid loading this data on orientation change
             imageUrl=null;
             imageDate=null;
 
