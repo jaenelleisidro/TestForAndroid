@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -150,8 +152,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
      */
     private void loadSlider(List<String> urls){
         for(String url : urls){
+
             DefaultSliderView defaultSliderView=new DefaultSliderView(getActivity());
-            defaultSliderView.image(url);
+
             defaultSliderView
 //                    .description(name)
                     .image(url)
@@ -164,7 +167,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
         mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mSlider.setCustomAnimation(new DescriptionAnimation());
-        mSlider.setDuration(2000);
+        mSlider.setDuration(1000);
     }
 
 
@@ -181,16 +184,36 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         earthImage.setVisibility(View.VISIBLE);
         dateText.setVisibility(View.VISIBLE);
         earthImage.setOnClickListener(closeEarthClickListener);
+        YoYo.with(Techniques.SlideInDown)
+                .duration(1000)
+                .playOn((ViewGroup)earthImage.getParent().getParent());
+//        YoYo.with(Techniques.FadeIn).delay(1000)
+//                .duration(1500)
+//                .playOn(dateText);
+//        YoYo.with(Techniques.FadeIn).delay(1000)
+//                .duration(2000)
+//                .playOn(earthImage);
     }
 
     //a listener to close loaded map
     View.OnClickListener closeEarthClickListener=new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            earthImage.setVisibility(View.GONE);
-            dateText.setVisibility(View.GONE);
+//            earthImage.setVisibility(View.GONE);
+//            dateText.setVisibility(View.GONE);
             imageUrl=null;
             imageDate=null;
+
+            YoYo.with(Techniques.SlideOutUp)
+                    .duration(1000)
+                    .playOn((ViewGroup)earthImage.getParent().getParent());
+//            YoYo.with(Techniques.FadeOut)
+//                    .duration(1500)
+//                    .playOn(dateText);
+//            YoYo.with(Techniques.FadeOut)
+//                    .duration(2000)
+//                    .playOn(earthImage);
+
         }
     };
 
