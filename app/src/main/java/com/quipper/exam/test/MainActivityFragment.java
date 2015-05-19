@@ -23,9 +23,6 @@ import java.util.TimeZone;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
-    public interface Callback {
-        void load();
-    }
 
     private Button loadButton;
     private ImageView earthImage;
@@ -36,9 +33,6 @@ public class MainActivityFragment extends Fragment {
     static {
         TimeZone jst = TimeZone.getTimeZone("GMT+09:00");
         IMAGE_TIME_FORMAT.setTimeZone(jst);
-    }
-
-    public MainActivityFragment() {
     }
     String imageUrl;
     @Override
