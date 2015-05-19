@@ -19,25 +19,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class MainActivity extends ActionBarActivity implements MainActivityFragment.Callback {
-    private MainActivityFragment fragment;
-    private LoadTask loadTask;
-
-    private static final SimpleDateFormat IMAGE_TIME_FORMAT = new SimpleDateFormat("yyyyMMddHH", Locale.US);
-    private static final SimpleDateFormat LABEL_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:00", Locale.US);
-    static {
-        TimeZone jst = TimeZone.getTimeZone("GMT+09:00");
-        IMAGE_TIME_FORMAT.setTimeZone(jst);
-    }
+public class MainActivity extends ActionBarActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        fragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        fragment.setRetainInstance(false);
-    }
+   }
 
 
     @Override
@@ -62,63 +50,4 @@ public class MainActivity extends ActionBarActivity implements MainActivityFragm
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void load() {
-        URL imageUrl;
-        Date dateToShow = new Date(new Date().getTime() - 30 * 60 * 1000);
-        String url = String.format("http://www.jma.go.jp/jp/gms/imgs/5/infrared/1/%s00-00.png",
-                IMAGE_TIME_FORMAT.format(dateToShow));
-        try {
-            imageUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        if (loadTask != null &&
-                loadTask.getStatus() == AsyncTask.Status.RUNNING &&
-                !loadTask.isCancelled()) {
-            return;
-        }
-        loadTask = new LoadTask(fragment);
-        loadTask.execute(imageUrl);
-        fragment.setDateLabel(LABEL_FORMAT.format(dateToShow));
-    }
-
-    static class LoadTask extends AsyncTask<URL, Void, List<Bitmap>> {
-        private MainActivityFragment fragment;
-
-        LoadTask(MainActivityFragment fragment) {
-            this.fragment = fragment;
-        }
-
-        @Override
-        protected List<Bitmap> doInBackground(URL... params) {
-            List<Bitmap> results = new ArrayList<>();
-            try {
-                for (URL url : params) {
-                    if (isCancelled()) {
-                        break;
-                    }
-                    URLConnection connection = url.openConnection();
-                    Bitmap bitmap = BitmapFactory.decodeStream(connection.getInputStream());
-                    if (bitmap != null) {
-                        results.add(bitmap);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return results;
-        }
-
-        @Override
-        protected void onPostExecute(List<Bitmap> bitmaps) {
-            super.onPostExecute(bitmaps);
-
-            if (!bitmaps.isEmpty()) {
-                fragment.showImage(bitmaps.get(0));
-            }
-        }
-    }
 }
