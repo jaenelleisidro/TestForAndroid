@@ -28,10 +28,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
-                    <TextView
+                    <com.rey.material.widget.Button
+                        style="@style/FlatWaveButtonRippleStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                         android:text="Created By Jay :D"
                         android:id="@+id/tvCreatedByJay"
                         android:layout_centerVertical="true"
