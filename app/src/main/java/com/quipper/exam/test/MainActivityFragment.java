@@ -15,6 +15,9 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.nineoldandroids.animation.Animator;
+import com.quipper.exam.test.view.MapSliderView;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -32,6 +35,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private Button loadButton;
     private ImageView earthImage;
     private TextView dateText;
+    private TextView tvCreatedByJay;
     private SliderLayout mSlider;
     private static final int CONSTANT_ONESECONDINMILLISECONDS=1000;
     private static final int CONSTANT_ONEMINUTEINMILLISECONDS=CONSTANT_ONESECONDINMILLISECONDS*60;
@@ -59,16 +63,24 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         loadButton = (Button) view.findViewById(R.id.load_button);
         earthImage = (ImageView) view.findViewById(R.id.earth_image);
-        earthImage.setVisibility(View.GONE);
         dateText = (TextView) view.findViewById(R.id.date_text);
-        dateText.setVisibility(View.GONE);
+        tvCreatedByJay=(TextView) view.findViewById(R.id.tvCreatedByJay);
 
         mSlider=(SliderLayout)view.findViewById(R.id.slider);
         loadSlider();
         loadButton.setOnClickListener(this);
 
+        tvCreatedByJay.setOnClickListener(tvCreatedByJayOnClick);
+        tvCreatedByJay.callOnClick();
         return view;
     }
+    View.OnClickListener tvCreatedByJayOnClick=new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            YoYo.with(Techniques.Wobble).duration(3000).playOn(tvCreatedByJay);
+        }
+    };
+
 
     @Override
     public void onClick(View v) {
@@ -137,35 +149,38 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     private void loadSlider(int numberOfmaps,int minutesInterval){
-        List<String> urls=new ArrayList<>();
+        List<Date> dates=new ArrayList<Date>();
         for(int index=0;index<numberOfmaps;index++){
             Date date=generateDateForMinutesAgo(CONSTANT_MINUTESDELAYOFMAPAPI+(minutesInterval*index));
-            urls.add(generateMapImageUrlFromDate(date));
+            dates.add(date);
         }
-        loadSlider(urls);
+        loadSlider(dates);
     }
 
 
     /**
-     * This will load the slider layout with images supplied by the url arguement
-     * @param urls links of images
+     * This will load the slider layout with images
+     * date will be used for generating the the image links
+     * @param dates of images
      */
-    private void loadSlider(List<String> urls){
-        for(String url : urls){
+    private void loadSlider(List<Date> dates){
 
-            DefaultSliderView defaultSliderView=new DefaultSliderView(getActivity());
 
-            defaultSliderView
-//                    .description(name)
+        for(Date date : dates){
+            MapSliderView sliderView = new MapSliderView(getActivity());
+
+            //DefaultSliderView sliderView=new DefaultSliderView(getActivity());
+            String url=generateMapImageUrlFromDate(date);
+            sliderView
+                    .description(LABEL_FORMAT.format(date))
                     .image(url)
                     .setScaleType(BaseSliderView.ScaleType.Fit);
-//                    .setOnSliderClickListener(this);
-            defaultSliderView.getBundle()
+            sliderView.getBundle()
                     .putString("url",url);
-            mSlider.addSlider(defaultSliderView);
+            mSlider.addSlider(sliderView);
         }
         mSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
-        mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Right_Top);
         mSlider.setCustomAnimation(new DescriptionAnimation());
         mSlider.setDuration(1000);
     }
@@ -181,39 +196,43 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 .load(imageUrl)
                 .into(earthImage);
         dateText.setText(imageDate);
-        earthImage.setVisibility(View.VISIBLE);
-        dateText.setVisibility(View.VISIBLE);
         earthImage.setOnClickListener(closeEarthClickListener);
+        final ViewGroup parent=(ViewGroup) earthImage.getParent().getParent();
         YoYo.with(Techniques.SlideInDown)
                 .duration(1000)
-                .playOn((ViewGroup)earthImage.getParent().getParent());
-//        YoYo.with(Techniques.FadeIn).delay(1000)
-//                .duration(1500)
-//                .playOn(dateText);
-//        YoYo.with(Techniques.FadeIn).delay(1000)
-//                .duration(2000)
-//                .playOn(earthImage);
+                .withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                })
+                .playOn(parent);
+        parent.setVisibility(View.VISIBLE);
     }
 
     //a listener to close loaded map
     View.OnClickListener closeEarthClickListener=new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-//            earthImage.setVisibility(View.GONE);
-//            dateText.setVisibility(View.GONE);
             imageUrl=null;
             imageDate=null;
 
             YoYo.with(Techniques.SlideOutUp)
                     .duration(1000)
-                    .playOn((ViewGroup)earthImage.getParent().getParent());
-//            YoYo.with(Techniques.FadeOut)
-//                    .duration(1500)
-//                    .playOn(dateText);
-//            YoYo.with(Techniques.FadeOut)
-//                    .duration(2000)
-//                    .playOn(earthImage);
-
+                    .playOn((ViewGroup) earthImage.getParent().getParent());
         }
     };
 
