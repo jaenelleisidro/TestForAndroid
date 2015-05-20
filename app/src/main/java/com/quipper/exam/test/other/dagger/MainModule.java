@@ -13,6 +13,7 @@ import com.quipper.exam.test.view.activity.MapListActivity;
 import com.quipper.exam.test.view.fragment.AnimatedMapFragment;
 import com.quipper.exam.test.view.fragment.BaseFragment;
 import com.quipper.exam.test.view.fragment.CarouselFragment;
+import com.quipper.exam.test.view.fragment.HomeFragment;
 import com.quipper.exam.test.view.fragment.MainActivityFragment;
 import com.quipper.exam.test.view.fragment.MapsFragment;
 
@@ -40,6 +41,7 @@ import dagger.Provides;
                 , AnimatedMapFragment.class
                 , CarouselFragment.class
                 , MapsFragment.class
+                , HomeFragment.class
         }
 )
 public class MainModule {

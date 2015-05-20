@@ -28,7 +28,7 @@ android:layout_height="match_parent">
             android:layout_height="match_parent" >
             <fragment
                 android:id="@+id/fragment"
-                android:name="com.quipper.exam.test.view.fragment.MainActivityFragment"
+                android:name="com.quipper.exam.test.view.fragment.HomeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

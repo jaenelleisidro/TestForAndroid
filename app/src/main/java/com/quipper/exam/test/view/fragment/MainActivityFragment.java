@@ -35,7 +35,7 @@ import butterknife.InjectView;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends BaseFragment {
+public class MainActivityFragment extends BaseFragment implements View.OnClickListener{
 
     public static final String BUNDLEKEY_MAP = "BUNDLEKEY_MAP";
     @Inject
@@ -57,43 +57,34 @@ public class MainActivityFragment extends BaseFragment {
     @InjectView(R.id.tvViewList)
     com.rey.material.widget.Button tvViewList;
 
-    private View.OnClickListener tvPlayAnimatedMapOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            AnimatedMapActivity.start(v.getContext());
-        }
-    };
-    private View.OnClickListener tvViewListOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            MapListActivity.start(v.getContext());
-        }
-    };
-    private View.OnClickListener tvCreatedByJayOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            YoYo.with(Techniques.Wobble).duration(3000).playOn(v);
-        }
-    };
-
     volatile Map map;
-    //a listener to close loaded map
-    View.OnClickListener closeEarthClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //delete the variable to avoid loading this data on orientation change
-            map = null;
-            YoYo.with(Techniques.SlideOutUp)
-                    .duration(1000)
-                    .playOn((ViewGroup) v.getParent().getParent());
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.tvPlayAnimatedMap :
+                AnimatedMapActivity.start(v.getContext());
+                break;
+            case R.id.tvViewList :
+                MapListActivity.start(v.getContext());
+                break;
+            case R.id.tvCreatedByJay :
+                YoYo.with(Techniques.Wobble).duration(3000).playOn(v);
+                break;
+            case R.id.load_button :
+                loadMap();
+                break;
+            case R.id.earth_image :
+                //close loaded map
+                //delete the variable to avoid loading this data on orientation change
+                map = null;
+                YoYo.with(Techniques.SlideOutUp)
+                        .duration(1000)
+                        .playOn((ViewGroup) v.getParent().getParent());
+                break;
+
         }
-    };
-    View.OnClickListener loadButtonOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            loadMap();
-        }
-    };
+    }
 
     @Override
     public View onCreateView2(LayoutInflater inflater, final ViewGroup container,
@@ -104,14 +95,12 @@ public class MainActivityFragment extends BaseFragment {
 
     @Override
     public void onActivityCreated2(Bundle savedInstanceState) {
-        loadButton.setOnClickListener(loadButtonOnClick);
-        tvCreatedByJay.setOnClickListener(tvCreatedByJayOnClick);
-        tvViewList.setOnClickListener(tvViewListOnClick);
-        tvPlayAnimatedMap.setOnClickListener(tvPlayAnimatedMapOnClick);
-
-
+        loadButton.setOnClickListener(this);
+        tvCreatedByJay.setOnClickListener(this);
+        tvViewList.setOnClickListener(this);
+        tvPlayAnimatedMap.setOnClickListener(this);
         if (map != null) {
-            loadMap(map);
+            loadMap(map,false);
         }
         //androidUtils.loadFragment(this,R.id.animatedMapHolder, AnimatedMapFragment.newInstance());
     }
@@ -141,21 +130,23 @@ public class MainActivityFragment extends BaseFragment {
 
     private void loadMap() {
         map = mapManager.generateLatestMap();
-        loadMap(map);
+        loadMap(map,true);
     }
 
-    private void loadMap(Map map) {
+    private void loadMap(Map map,boolean isAnimated) {
+        final ViewGroup parent = (ViewGroup) earthImage.getParent().getParent();
         Picasso.with(appContext)
                 .load(map.imageUrl)
-                .resize(600,300)
+                .resize(600, 300)
                 .into(earthImage);
         dateText.setText(map.description);
-        earthImage.setOnClickListener(closeEarthClickListener);
-        final ViewGroup parent = (ViewGroup) earthImage.getParent().getParent();
-        YoYo.with(Techniques.SlideInDown)
-                .duration(1000)
-                .playOn(parent);
+        earthImage.setOnClickListener(this);
         parent.setVisibility(View.VISIBLE);
+        if(isAnimated) {
+            YoYo.with(Techniques.SlideInDown)
+                    .duration(1000)
+                    .playOn(parent);
+        }
     }
 
 

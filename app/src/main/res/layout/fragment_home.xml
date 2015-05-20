@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.nirhart.parallaxscroll.views.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/stripe_repeat"
+    app:parallax_factor="1.9"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <fragment
+            android:id="@+id/fragment"
+            android:name="com.quipper.exam.test.view.fragment.AnimatedMapFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/load_button"
+                    style="@style/RaiseWaveColorButtonRippleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:text="Load"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FFFFFFFF"
+                    app:rd_delayClick="true" />
+                <com.rey.material.widget.Button
+                    android:id="@+id/play_button"
+                    style="@style/RaiseWaveColorButtonRippleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:text="Play"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FFFFFFFF"
+                    app:rd_delayClick="true" />
+                <com.rey.material.widget.Button
+                    android:id="@+id/list_button"
+                    style="@style/RaiseWaveColorButtonRippleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:text="List"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FFFFFFFF"
+                    app:rd_delayClick="true" />
+                </LinearLayout>
+                    <android.support.v7.widget.CardView
+                        android:padding="5dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+                        <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:id="@+id/imgMapToBeLoaded" />
+                    </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="As part of Japan's government, the Japan Meteorological Agency (JMA) implements its services with the following ultimate goals in compliance with the Act for Establishment of the Ministry of Land, Infrastructure, Transport and Tourism (MLIT) and the Meteorological Service Act:
+
+            Prevention and mitigation of natural disasters
+            Safety of transportation
+            Development and prosperity of industry
+            Improvement of public welfare
+            To meet these goals, JMA focuses its efforts on monitoring the earth's environment and forecasting natural phenomena related to the atmosphere, the oceans and the earth, as well as on conducting research and technical development in related fields. JMA also engages in international cooperation activities regarding both meteorology and seismology to meet Japan's international obligations and to promote partnerships with National Meteorological and Hydrological Services as well as various related international agencies.
+
+            Particular emphasis is placed on the prevention and mitigation of natural disasters, as Japan is prone to a variety of natural hazards such as typhoons, heavy rains and earthquakes. JMA, as the sole national authority responsible for issuing weather/tsunami warnings and advisories, is required to provide reliable and timely information to governmental agencies and residents for the purposes of natural disaster prevention and mitigation. In the event of a major earthquake or tsunami, senior government officials from the relevant ministries and agencies are summoned to the Prime Minister's Official Residence to respond to the disaster in an appropriate and coordinated way based on earthquake information and tsunami warnings issued by JMA.
+
+            In this way, JMA plays a vital role in natural disaster mitigation and prevention activities in the country through cooperation and coordination with relevant authorities, including the central government and individual local governments."
+                android:textSize="15sp"
+                android:background="@android:color/white"
+                android:padding="5dp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.nirhart.parallaxscroll.views.ParallaxScrollView>

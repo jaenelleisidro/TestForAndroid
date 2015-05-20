@@ -3,5 +3,6 @@
 
     <color name="animatedMapBackground">#FF000000</color>
     <color name="pager_background">#F4F4F4</color>
+    <color name="mapimage_background">#AAAAAA</color>
 
 </resources>
