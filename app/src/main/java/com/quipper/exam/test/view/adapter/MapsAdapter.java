@@ -76,7 +76,9 @@ public class MapsAdapter extends EndlessAdapter {
             Map map = (Map) getWrappedAdapter().getItem(position);
             viewHolder.title.setVisibility(View.VISIBLE);
             viewHolder.imageView.setVisibility(View.VISIBLE);
-            Picasso.with(context).load(map.imageUrl).into(viewHolder.imageView);
+            Picasso.with(context).load(map.imageUrl)
+                    .resize(200,100)
+                    .into(viewHolder.imageView);
             viewHolder.title.setText(map.description);
             viewHolder.description.setText("");
         }

@@ -13,6 +13,8 @@ import com.quipper.exam.test.R;
 import com.quipper.exam.test.domain.Map;
 import com.squareup.picasso.Picasso;
 
+import javax.inject.Inject;
+
 import butterknife.InjectView;
 
 
@@ -28,6 +30,8 @@ public class MapActivity extends BaseActivity {
     @InjectView(R.id.tvPlayAnimatedMap)
     com.rey.material.widget.Button tvPlayAnimatedMap;
     private Map map;
+    @Inject
+    Context appContext;
 
 
     @Override
@@ -37,11 +41,11 @@ public class MapActivity extends BaseActivity {
         setContentView(R.layout.activity_map);
 
         map = (Map) getIntent().getSerializableExtra(KEY_MAP);
-        Picasso.with(this).load(map.imageUrl).into(imgParallax);
+        Picasso.with(appContext).load(map.imageUrl).into(imgParallax);
         String html="Description : "+map.description +"<br/>"
                     +"Link : <a href=\""+ map.imageUrl+"\">"+map.imageUrl+"</a><br/>";
         tvDetails.setText(Html.fromHtml(html));
-        tvPlayAnimatedMap.setOnClickListener(new View.OnClickListener(){
+        tvPlayAnimatedMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AnimatedMapActivity.start(MapActivity.this);

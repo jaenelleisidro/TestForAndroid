@@ -1,5 +1,6 @@
 package com.quipper.exam.test.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.transition.Slide;
@@ -29,6 +30,8 @@ public class AnimatedMapFragment extends BaseFragment {
     @InjectView(R.id.slAnimatedMap)
     SliderLayout slAnimatedMap;
     @Inject MapManager mapManager;
+    @Inject
+    Context appContext;
 
     public static final String BUNDLEKEY_MAP="BUNDLEKEY_MAP";
     public static final String BUNDLEKEY_MAPS="BUNDLEKEY_MAPS";
@@ -67,7 +70,7 @@ public class AnimatedMapFragment extends BaseFragment {
      */
     private void loadSlider(List<Map> maps) {
         for (Map map : maps) {
-            MapSliderView sliderView = new MapSliderView(getActivity());
+            MapSliderView sliderView = new MapSliderView(appContext);
             sliderView
                     .description(map.description)
                     .image(map.imageUrl)

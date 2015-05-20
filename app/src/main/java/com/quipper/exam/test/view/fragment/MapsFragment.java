@@ -1,5 +1,6 @@
 package com.quipper.exam.test.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import butterknife.InjectView;
 public class MapsFragment extends BaseFragment {
 
     @Inject
+    Context appContext;
+    @Inject
     protected MapManager mapManager;
 
     @InjectView(R.id.lvListHolder)
@@ -32,7 +35,7 @@ public class MapsFragment extends BaseFragment {
 
     @Override
     public void onActivityCreated2(Bundle savedInstanceState) {
-        MapsAdapter adapter=new MapsAdapter(getActivity(),mapManager);
+        MapsAdapter adapter=new MapsAdapter(appContext,mapManager);
         lvMovies.setAdapter(adapter);
         lvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

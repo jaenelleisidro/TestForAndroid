@@ -1,5 +1,6 @@
 package com.quipper.exam.test.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -41,6 +42,8 @@ public class MainActivityFragment extends BaseFragment {
     AndroidUtils androidUtils;
     @Inject
     MapManager mapManager;
+    @Inject
+    Context appContext;
     @InjectView(R.id.load_button)
     Button loadButton;
     @InjectView(R.id.earth_image)
@@ -54,22 +57,22 @@ public class MainActivityFragment extends BaseFragment {
     @InjectView(R.id.tvViewList)
     com.rey.material.widget.Button tvViewList;
 
-    View.OnClickListener tvPlayAnimatedMapOnClick = new View.OnClickListener() {
+    private View.OnClickListener tvPlayAnimatedMapOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            AnimatedMapActivity.start(getActivity());
+            AnimatedMapActivity.start(v.getContext());
         }
     };
-    View.OnClickListener tvViewListOnClick = new View.OnClickListener() {
+    private View.OnClickListener tvViewListOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            MapListActivity.start(getActivity());
+            MapListActivity.start(v.getContext());
         }
     };
-    View.OnClickListener tvCreatedByJayOnClick = new View.OnClickListener() {
+    private View.OnClickListener tvCreatedByJayOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            YoYo.with(Techniques.Wobble).duration(3000).playOn(tvCreatedByJay);
+            YoYo.with(Techniques.Wobble).duration(3000).playOn(v);
         }
     };
 
@@ -82,7 +85,7 @@ public class MainActivityFragment extends BaseFragment {
             map = null;
             YoYo.with(Techniques.SlideOutUp)
                     .duration(1000)
-                    .playOn((ViewGroup) earthImage.getParent().getParent());
+                    .playOn((ViewGroup) v.getParent().getParent());
         }
     };
     View.OnClickListener loadButtonOnClick = new View.OnClickListener() {
@@ -110,8 +113,7 @@ public class MainActivityFragment extends BaseFragment {
         if (map != null) {
             loadMap(map);
         }
-        ArrayList<Map> maps=mapManager.generateLatestMaps();
-        androidUtils.loadFragment(this,R.id.animatedMapHolder, AnimatedMapFragment.newInstance(maps));
+        //androidUtils.loadFragment(this,R.id.animatedMapHolder, AnimatedMapFragment.newInstance());
     }
 
     //this will be called when the fragment was recovered after destroyed. this will give us a chance to recover previous datas.
@@ -143,8 +145,9 @@ public class MainActivityFragment extends BaseFragment {
     }
 
     private void loadMap(Map map) {
-        Picasso.with(getActivity())
+        Picasso.with(appContext)
                 .load(map.imageUrl)
+                .resize(600,300)
                 .into(earthImage);
         dateText.setText(map.description);
         earthImage.setOnClickListener(closeEarthClickListener);
