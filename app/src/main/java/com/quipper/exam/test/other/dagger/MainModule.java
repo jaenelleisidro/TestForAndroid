@@ -9,6 +9,7 @@ import com.quipper.exam.test.view.activity.AnimatedMapActivity;
 import com.quipper.exam.test.view.activity.BaseActivity;
 import com.quipper.exam.test.view.activity.MainActivity;
 import com.quipper.exam.test.view.activity.MapActivity;
+import com.quipper.exam.test.view.activity.MapListActivity;
 import com.quipper.exam.test.view.fragment.AnimatedMapFragment;
 import com.quipper.exam.test.view.fragment.BaseFragment;
 import com.quipper.exam.test.view.fragment.CarouselFragment;
@@ -34,6 +35,7 @@ import dagger.Provides;
                 , MainActivity.class
                 , MainActivityFragment.class
                 , AnimatedMapActivity.class
+                , MapListActivity.class
                 , MapActivity.class
                 , AnimatedMapFragment.class
                 , CarouselFragment.class

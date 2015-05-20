@@ -1,5 +1,6 @@
 package com.quipper.exam.test.view.activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.quipper.exam.test.R;
 import com.quipper.exam.test.model.businesslayer.MapManager;
@@ -24,14 +25,12 @@ public class MainActivity extends BaseActivity {
     @Inject
     MapManager mapManager;
 
+    Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        androidUtils.loadFragment(this,R.id.container, AnimatedMapFragment.newInstance(mapManager.generateLatestMaps()));
-//        androidUtils.loadFragment(this,R.id.container, MainActivityFragment.newInstance());
-        androidUtils.loadFragment(this,R.id.container, CarouselFragment.newInstance());
 
     }
 

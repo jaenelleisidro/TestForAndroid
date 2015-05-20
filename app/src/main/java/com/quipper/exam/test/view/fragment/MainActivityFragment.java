@@ -20,6 +20,7 @@ import com.quipper.exam.test.domain.Map;
 import com.quipper.exam.test.model.businesslayer.MapManager;
 import com.quipper.exam.test.other.helper.AndroidUtils;
 import com.quipper.exam.test.view.activity.AnimatedMapActivity;
+import com.quipper.exam.test.view.activity.MapListActivity;
 import com.quipper.exam.test.view.customview.MapSliderView;
 import com.squareup.picasso.Picasso;
 
@@ -48,15 +49,30 @@ public class MainActivityFragment extends BaseFragment {
     TextView dateText;
     @InjectView(R.id.tvCreatedByJay)
     TextView tvCreatedByJay;
-    @InjectView(R.id.animatedMapHolder)
-    ViewGroup animatedMapHolder;
+    @InjectView(R.id.tvPlayAnimatedMap)
+    com.rey.material.widget.Button tvPlayAnimatedMap;
+    @InjectView(R.id.tvViewList)
+    com.rey.material.widget.Button tvViewList;
 
+    View.OnClickListener tvPlayAnimatedMapOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AnimatedMapActivity.start(getActivity());
+        }
+    };
+    View.OnClickListener tvViewListOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            MapListActivity.start(getActivity());
+        }
+    };
     View.OnClickListener tvCreatedByJayOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             YoYo.with(Techniques.Wobble).duration(3000).playOn(tvCreatedByJay);
         }
     };
+
     volatile Map map;
     //a listener to close loaded map
     View.OnClickListener closeEarthClickListener = new View.OnClickListener() {
@@ -87,7 +103,10 @@ public class MainActivityFragment extends BaseFragment {
     public void onActivityCreated2(Bundle savedInstanceState) {
         loadButton.setOnClickListener(loadButtonOnClick);
         tvCreatedByJay.setOnClickListener(tvCreatedByJayOnClick);
-        tvCreatedByJayOnClick.onClick(tvCreatedByJay);
+        tvViewList.setOnClickListener(tvViewListOnClick);
+        tvPlayAnimatedMap.setOnClickListener(tvPlayAnimatedMapOnClick);
+
+
         if (map != null) {
             loadMap(map);
         }

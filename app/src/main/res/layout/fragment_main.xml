@@ -40,7 +40,33 @@
                         android:layout_centerVertical="true"
                         android:text="Created By Jay :D"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                        android:textColor="#ffe3fff6" />
+                        android:textColor="#ffe3fff6"
+                        android:layout_alignParentTop="false"
+                        android:layout_alignParentRight="false" />
+                    <com.rey.material.widget.Button
+                        android:id="@+id/tvPlayAnimatedMap"
+                        style="@style/FlatWaveButtonRippleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="Play Animated Map"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                        android:textColor="#ffe3fff6"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true" />
+                    <com.rey.material.widget.Button
+                        android:id="@+id/tvViewList"
+                        style="@style/FlatWaveButtonRippleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="View Map List"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                        android:textColor="#ffe3fff6"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true" />
                 </RelativeLayout>
 
                 <android.support.v7.widget.CardView

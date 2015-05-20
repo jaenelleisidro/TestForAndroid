@@ -26,6 +26,11 @@ android:layout_height="match_parent">
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
+            <fragment
+                android:id="@+id/fragment"
+                android:name="com.quipper.exam.test.view.fragment.MainActivityFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </FrameLayout>
 
