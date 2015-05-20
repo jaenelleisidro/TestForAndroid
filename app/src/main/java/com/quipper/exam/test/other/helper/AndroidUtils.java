@@ -59,6 +59,13 @@ public class AndroidUtils {
                 .commit();
 
     }
+    public static void loadFragment(Fragment parent, int viewGroupFragmentContainerId, Fragment child) {
+        final FragmentManager fragmentManager = parent.getChildFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(viewGroupFragmentContainerId, child)
+                .commit();
+
+    }
 
     public String convertUriGalleryToString(Uri selectedImage) {
         String[] filePathColumn = {MediaStore.Images.Media.DATA};

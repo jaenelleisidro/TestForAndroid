@@ -1,6 +1,8 @@
 package com.quipper.exam.test.view.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +19,11 @@ import com.quipper.exam.test.R;
 import com.quipper.exam.test.domain.Map;
 import com.quipper.exam.test.model.businesslayer.MapManager;
 import com.quipper.exam.test.other.helper.AndroidUtils;
+import com.quipper.exam.test.view.activity.AnimatedMapActivity;
 import com.quipper.exam.test.view.customview.MapSliderView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,14 +48,15 @@ public class MainActivityFragment extends BaseFragment {
     TextView dateText;
     @InjectView(R.id.tvCreatedByJay)
     TextView tvCreatedByJay;
+    @InjectView(R.id.animatedMapHolder)
+    ViewGroup animatedMapHolder;
+
     View.OnClickListener tvCreatedByJayOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             YoYo.with(Techniques.Wobble).duration(3000).playOn(tvCreatedByJay);
         }
     };
-    @InjectView(R.id.slider)
-    SliderLayout mSlider;
     volatile Map map;
     //a listener to close loaded map
     View.OnClickListener closeEarthClickListener = new View.OnClickListener() {
@@ -80,13 +85,14 @@ public class MainActivityFragment extends BaseFragment {
 
     @Override
     public void onActivityCreated2(Bundle savedInstanceState) {
-        loadSlider();
         loadButton.setOnClickListener(loadButtonOnClick);
         tvCreatedByJay.setOnClickListener(tvCreatedByJayOnClick);
         tvCreatedByJayOnClick.onClick(tvCreatedByJay);
         if (map != null) {
             loadMap(map);
         }
+        ArrayList<Map> maps=mapManager.generateLatestMaps();
+        androidUtils.loadFragment(this,R.id.animatedMapHolder, AnimatedMapFragment.newInstance(maps));
     }
 
     //this will be called when the fragment was recovered after destroyed. this will give us a chance to recover previous datas.
@@ -107,36 +113,6 @@ public class MainActivityFragment extends BaseFragment {
         }
     }
 
-    /**
-     * starts the backgroud map that animates
-     */
-    private void loadSlider() {
-        List<Map> maps = mapManager.generateLatestMaps();
-        loadSlider(maps);
-    }
-
-    /**
-     * This will load the slider layout with images
-     * date will be used for generating the the image links
-     *
-     * @param maps
-     */
-    private void loadSlider(List<Map> maps) {
-        for (Map map : maps) {
-            MapSliderView sliderView = new MapSliderView(getActivity());
-            sliderView
-                    .description(map.description)
-                    .image(map.imageUrl)
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-            sliderView.getBundle()
-                    .putSerializable(BUNDLEKEY_MAP, map);
-            mSlider.addSlider(sliderView);
-        }
-        mSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
-        mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Right_Top);
-        mSlider.setCustomAnimation(new DescriptionAnimation());
-        mSlider.setDuration(1000);
-    }
 
     /**
      * This will load the latest map image, if it's already downloaded before, it will use the cache.
@@ -160,4 +136,8 @@ public class MainActivityFragment extends BaseFragment {
         parent.setVisibility(View.VISIBLE);
     }
 
+
+    public static Fragment newInstance(){
+        return new MainActivityFragment();
+    }
 }

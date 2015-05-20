@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.nirhart.parallaxscroll.views.ParallaxScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:parallax_factor="1.9"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/imgParallax"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/fading_star_repeat"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/tvDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15sp"
+            android:background="@android:color/white"
+            android:padding="5dp"
+            tools:ignore="HardcodedText" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="500dp"
+            android:background="@drawable/star_repeat"
+            >
+
+
+            <com.rey.material.widget.Button
+                android:id="@+id/tvPlayAnimatedMap"
+                style="@style/FlatWaveButtonRippleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Click to Play Animated Map Full Screen"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                android:textColor="#ffe3fff6"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</com.nirhart.parallaxscroll.views.ParallaxScrollView>

@@ -76,13 +76,12 @@
                 </android.support.v7.widget.CardView>
 
             </FrameLayout>
-
-            <com.daimajia.slider.library.SliderLayout
-                android:id="@+id/slider"
+            <RelativeLayout
+                android:id="@+id/animatedMapHolder"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1" />
-
+                android:layout_weight="1"
+                ></RelativeLayout>
 
         </LinearLayout>
 

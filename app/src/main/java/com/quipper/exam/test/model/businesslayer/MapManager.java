@@ -17,7 +17,7 @@ public class MapManager {
      * @return
      */
     private Date generateDateForMinutesAgo(int minutes) {
-        Date dateToShow = new Date(getCurrentMillis() - minutes * Constant.ONEMINUTEINMILLISECONDS);
+        Date dateToShow = new Date(getCurrentMillis() - (minutes * Constant.ONEMINUTEINMILLISECONDS));
         return dateToShow;
     }
 
@@ -44,12 +44,12 @@ public class MapManager {
      * Generate a series of maps starting from the latest
      * @return
      */
-    public List<Map> generateLatestMaps() {
+    public ArrayList<Map> generateLatestMaps() {
         return generateLatestMaps(Constant.SLIDERMAP_NUMBEROFMAPS, Constant.SLIDERMAP_MINUTESINTERVAL);
     }
 
-    public List<Map> generateLatestMaps(int numberOfMaps, int minutesInterval) {
-        List<Map> maps = new ArrayList<>();
+    public ArrayList<Map> generateLatestMaps(int numberOfMaps, int minutesInterval) {
+        ArrayList<Map> maps = new ArrayList<>();
         for (int index = 0; index < numberOfMaps; index++) {
             Date date = generateDateForMinutesAgo(Constant.MINUTESDELAYOFMAPAPI + (minutesInterval * index));
             maps.add(generateMapFromDate(date));
@@ -65,6 +65,18 @@ public class MapManager {
     public Map generateMapForMinutesAgo(int minutes) {
         Map map = generateMapFromDate(generateDateForMinutesAgo(minutes));
         return map;
+    }
+
+    public ArrayList<Map> getMaps(int index,int numberOfMaps){
+        ArrayList<Map> maps=new ArrayList<>();
+        for(int ctr=0;ctr<numberOfMaps;ctr++){
+            maps.add(getMap(ctr));
+        }
+        return maps;
+    }
+
+    public Map getMap(int index){
+        return generateMapForMinutesAgo(Constant.MINUTESDELAYOFMAPAPI+(Constant.SLIDERMAP_MINUTESINTERVAL*index));
     }
 
     public Map generateMapFromDate(Date date) {
