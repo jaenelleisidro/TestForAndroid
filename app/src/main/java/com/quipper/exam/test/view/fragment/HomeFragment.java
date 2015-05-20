@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -38,6 +39,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
     Button listButton;
     @InjectView(R.id.imgMapToBeLoaded)
     ImageView imgMapToBeLoaded;
+    @InjectView(R.id.tvMapDescription)
+    TextView tvMapDescription;
     public static final String BUNDLEKEY_MAP = "BUNDLEKEY_MAP";
 
     private volatile Map map;
@@ -98,7 +101,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener{
                 .load(map.imageUrl)
                 .resize(600, 300)
                 .into(imgMapToBeLoaded);
-//        dateText.setText(map.description);
+        tvMapDescription.setText(map.description);
         if(isAnimated) {
             YoYo.with(Techniques.SlideInDown)
                     .duration(1000)
